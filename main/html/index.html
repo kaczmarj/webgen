@@ -60,6 +60,7 @@
 
     <script type="text/javascript" src = "../js/afterSubmit.js"></script>
     <script type ="text/javascript" src = "../js/fillSelectBoxes.js"></script>
+    <script type ="text/javascript" src = "../js/test.js"></script>
 
   </head>
   
@@ -160,9 +161,40 @@
         </div>
         </div>
 
-        <div class='row'>
-        <p style="text-align: center;"><b>2) Filter data by gene mutation signature and/or by metadata</b></p>
-
+        <div class='row'
+          style="position: relative;"
+        >
+        <p style="text-align: center;"><b>2) Filter data by gene mutation signature and/or by metadata</b>
+          <button onmouseover="show('hint1')" onmouseout="hide('hint1')"
+          style
+          >
+          ?
+          </button>
+        </p>
+        <div id="hint1" 
+            style="
+              display:none;
+              background-color: lightyellow;
+              border-color: black;
+              border-width: 1px;
+              border-radius: 10px;
+              border-style: solid;
+              width: auto;
+              height: fit-content;
+              margin: 15px;
+              text-align: center;
+              z-index: 1;
+              position: absolute;
+              top: 10%;
+              left: 20%;
+              "
+            >
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem praesentium, dignissimos eaque tempore a amet et, 
+              <br>quisquam ipsam quos soluta officia quis atque, explicabo laboriosam dicta libero fugit. Distinctio, 
+              ducimus?
+              <br>
+              <a href='https://google.com'>here is a link to our github!</a>
+          </div>
         <div id='mutationQuerySelectBox' class = 'col s6'>
           <select class="mutationMultipleSelection" name="selectedMutations[]" multiple="multiple" id="mutationMultipleSelection" onchange="buildDataExplorePlots(), saveInLocalStorage()";> 
               <!-- Filled by fillSelectBoxes.js -->
