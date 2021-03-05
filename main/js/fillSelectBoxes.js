@@ -34,7 +34,9 @@ let fillCancerTypeSelectBox = async function() {
     if(cancerTypeSelectedOptions){
         $('.cancerTypeMultipleSelection').val(cancerTypeSelectedOptions);
         if(cancerTypeSelectedOptions != "") {
-            fillGeneTypeSelectBox();
+            fillFirstGeneSelectBox();
+            fillClinicalSelectBox();
+            fillSecondGeneSelectBox();
         }
     }
 };
@@ -154,13 +156,14 @@ let fetchClinicalData = async function() {
     }
 }
 
-let fillGeneTypeSelectBox = async function() {
+let fillFirstGeneSelectBox = async function() {
 
-    let selectBox = document.getElementById("mutationMultipleSelection");
+    let selectBox = document.getElementById("geneOneMultipleSelection");
 
-    $('#mutationMultipleSelection').val(null).trigger('change');
+    $('#geneOneMultipleSelection').val(null).trigger('change');
 
-    if (!$('#mutationMultipleSelection').find("option[value='" + "TP53" + "']").length) {
+    // only populate dropdown options if they have not already been populated
+    if (!$('#geneOneMultipleSelection').find("option[value='" + "TP53" + "']").length) {
         let geneList = await fetch("https://raw.githubusercontent.com/web4bio/webgen/master/main/geneList.json").then(response => response.json());
         for(let i = 0; i < geneList.length; i++) {
             let currentOption = document.createElement("option");
@@ -171,20 +174,21 @@ let fillGeneTypeSelectBox = async function() {
         }
     }
 
-    let clinicalFeatureOptions = localStorage.getItem("clinicalFeatureOptions").split(',');
-    if(clinicalFeatureOptions){
-        $('.mutationMultipleSelection').val(clinicalFeatureOptions)
+    let geneSelectedOptions = localStorage.getItem("geneSelectedOptions").split(',');
+    if(geneSelectedOptions){
+        $('.geneOneMultipleSelection').val(geneSelectedOptions)
     }
     
 };
 
-let fillSecondGeneTypeSelectBox = async function() {
+let fillSecondGeneSelectBox = async function() {
 
-    let selectBox2 = document.getElementById("geneMultipleSelection");
+    let selectBox2 = document.getElementById("geneTwoMultipleSelection");
 
-    $('#geneMultipleSelection').val(null).trigger('change');
+    $('#geneTwoMultipleSelection').val(null).trigger('change');
 
-    if (!$('#geneMultipleSelection').find("option[value='" + "TP53" + "']").length) {
+    // only populate dropdown options if they have not already been populated
+    if (!$('#geneTwoMultipleSelection').find("option[value='" + "TP53" + "']").length) {
         let geneList = await fetch("https://raw.githubusercontent.com/web4bio/webgen/master/main/geneList.json").then(response => response.json());
         for(let i = 0; i < geneList.length; i++) {
             let currentOption = document.createElement("option");
@@ -195,9 +199,11 @@ let fillSecondGeneTypeSelectBox = async function() {
         }
     }
 
-    let clinicalFeatureOptions = localStorage.getItem("clinicalFeatureOptions").split(',');
-    if(clinicalFeatureOptions){
-        $('.mutationMultipleSelection').val(clinicalFeatureOptions)
+    $('#clinicalMultipleSelection').val(null).trigger('change');
+
+    let secondGeneSelectedOptions = localStorage.getItem("secondGeneSelectedOptions").split(',');
+    if(secondGeneSelectedOptions){
+        $('.geneTwoMultipleSelection').val(secondGeneSelectedOptions)
     }
     
 };
@@ -205,7 +211,7 @@ let fillSecondGeneTypeSelectBox = async function() {
 
 let allClinicalData;
 
-let fillClinicalTypeSelectBox = async function() {
+let fillClinicalSelectBox = async function() {
 
     let dataFetched = await fetchClinicalData();
     allClinicalData = dataFetched.Clinical_FH;
@@ -214,6 +220,7 @@ let fillClinicalTypeSelectBox = async function() {
 
     let selectBox = document.getElementById("clinicalMultipleSelection");
 
+    // only populate dropdown options if they have not already been populated
     if (!$('#clinicalMultipleSelection').find("option[value='" + "cohort" + "']").length) {
         let clinicalKeys = Object.keys(allClinicalData[0]);
         for (let i = 0; i < clinicalKeys.length; i++) {
@@ -225,11 +232,9 @@ let fillClinicalTypeSelectBox = async function() {
         }
     }
 
-    $('#clinicalMultipleSelection').val(null).trigger('change');
-
-    let clinicalFeatureOptions = localStorage.getItem("clinicalFeatureOptions").split(',');
-    if(clinicalFeatureOptions){
-        $('.clinicalMultipleSelection').val(clinicalFeatureOptions)
+    let clinicalSelectedOptions = localStorage.getItem("clinicalSelectedOptions").split(',');
+    if(clinicalSelectedOptions){
+        $('.clinicalMultipleSelection').val(clinicalSelectedOptions)
     }
     
 };
@@ -290,11 +295,13 @@ let saveInLocalStorage = async function() {
     let cancerTypeSelectedOptions = $('.cancerTypeMultipleSelection').select2('data').map(cohortInfo => cohortInfo.text.match(/\(([^)]+)\)/)[1]);
     localStorage.setItem("cancerTypeSelectedOptions", cancerTypeSelectedOptions);
 
-    let clinicalFeatureOptions = $('.mutationMultipleSelection').select2('data').map(clinicalFeature => clinicalFeature.text);
-    localStorage.setItem("clinicalFeatureOptions", clinicalFeatureOptions);
+    let geneSelectedOptions = $('.geneOneMultipleSelection').select2('data').map(gene => gene.text);
+    localStorage.setItem("geneSelectedOptions", geneSelectedOptions);
 
-    let clinicalFeatureOptions2 = $('.clinicalMultipleSelection').select2('data').map(clinicalFeature => clinicalFeature.text);
-    localStorage.setItem("clinicalFeatureOptions", clinicalFeatureOptions2);
+    let clinicalSelectedOptions = $('.clinicalMultipleSelection').select2('data').map(clinicalFeature => clinicalFeature.text);
+    localStorage.setItem("clinicalSelectedOptions", clinicalSelectedOptions);
 
+    let secondGeneSelectedOptions = $('.geneTwoMultipleSelection').select2('data').map(gene => gene.text);
+    localStorage.setItem("secondGeneSelectedOptions", secondGeneSelectedOptions);
 
 }
