@@ -237,7 +237,7 @@ buildHeatmap = async function (expData, clinData) {
 
 buildViolinPlot = async function (cohortORGeneQuery, data, independantVarType) {
     // Remove the loader
-    document.getElementById("violinDiv0").classList.remove("loader");
+    document.getElementById("svgViolinDiv0").classList.remove("loader");
     //Clear HTML content ov violinPlots div
     var violinsDiv = document.getElementById("violinPlots");
     violinsDiv.innerHTML = "";
@@ -327,7 +327,7 @@ buildDownloadData = async function (cohortID, genes, clin_vars, expressionData, 
         format: "json",
         cohort: cohortID,
         tcga_participant_barcode: barcodes_all,
-        fh_cde_name: clin_vars,
+        //fh_cde_name: clin_vars,
         page: 1,
         page_size: 2000,
         sort_by: "tcga_participant_barcode",
