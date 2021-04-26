@@ -102,6 +102,8 @@ let colorOutOfSpace = {
     }
 }
 
+let selectedGenesAndCF = new Array()
+
 let buildDataExplorePlots = async function() {
 
     let mySelectedClinicalFeatures = $('.geneOneMultipleSelection').select2('data').map(clinicalInfo => clinicalInfo.text);
@@ -116,7 +118,7 @@ let buildDataExplorePlots = async function() {
     } else {
 
         // clear all previous plots that were displayed
-        document.getElementById('dataexploration').innerHTML = "";
+        // document.getElementById('dataexploration').innerHTML = "";
 
         // get total number of barcodes for selected cancer type(s)
         let dataFetched = await fetchNumberSamples();
@@ -134,6 +136,14 @@ let buildDataExplorePlots = async function() {
             clinicalType[j].isSelected = false;
         }
         // loop through each selected clinical feature
+
+        let mySelectedClinicalFeaturesCopy = [...mySelectedClinicalFeatures]
+        mySelectedClinicalFeatures = _.difference(mySelectedClinicalFeaturesCopy, selectedGenesAndCF)
+        // if the 'old' array has a length greater than 'new' array, then removal had occured
+        if (selectedGenesAndCF.length > mySelectedClinicalFeaturesCopy.length) {
+            $('#' + _.difference(selectedGenesAndCF, mySelectedClinicalFeaturesCopy)[0] + 'Div').remove()
+        } else {
+
         for(let i = 0; i < mySelectedClinicalFeatures.length; i++) {
 
             let continuous = false;
@@ -251,7 +261,6 @@ let buildDataExplorePlots = async function() {
                     }
                 }}
                 if (colorOutOfSpace.yellowAt[currentFeature]) {
-                    // if (Object.keys(colorOutOfSpace.yellowAt[currentFeature]['Key']).length !== uniqueValuesForCurrentFeature.length) {}
                     colorOutOfSpace.updateGlobalColorDict(uniqueValuesForCurrentFeature, currentFeature)
                     data[0] = {...data[0], marker: {
                         colors: colorOutOfSpace.createColorArray(colorArray, currentFeature),
@@ -360,6 +369,8 @@ let buildDataExplorePlots = async function() {
                 displayNumberBarcodesAtIntersection()
             });
         }
+        }
+        selectedGenesAndCF = mySelectedClinicalFeaturesCopy
     }
 }}
                                                                    
