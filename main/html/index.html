@@ -184,7 +184,7 @@
                             name="cancerTypes[]"
                             multiple="multiple"
                             id="cancerTypeMultipleSelection"
-                            onchange="fillClinicalSelectBox(), displayNumberSamples(), saveInLocalStorage()"
+                            onchange="fillClinicalSelectBox(), displayNumberSamples(), saveInLocalStorage(), selectedGenesAndCFReset()"
                         >
                             <!-- Filled by fillSelectBoxes.js -->
                         </select>
@@ -203,7 +203,7 @@
                             name="selectedMutations[]"
                             multiple="multiple"
                             id="geneOneMultipleSelection"
-                            onchange="buildDataExplorePlots(allClinicalData), saveInLocalStorage()"
+                            onchange="buildDataExplorePlots(), saveInLocalStorage()"
                         />
                         <!-- Filled by fillSelectBoxes.js -->
                     </div>
@@ -215,7 +215,7 @@
                             name="selectedClinicals[]"
                             multiple="multiple"
                             id="clinicalMultipleSelection"
-                            onchange="buildDataExplorePlots(allClinicalData), saveInLocalStorage()"
+                            onchange="buildDataExplorePlots(), saveInLocalStorage()"
                         >
                             <!-- Filled by fillSelectBoxes.js -->
                         </select>

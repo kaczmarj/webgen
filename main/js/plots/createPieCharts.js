@@ -103,6 +103,10 @@ let colorOutOfSpace = {
 }
 
 let selectedGenesAndCF = new Array()
+let selectedGenesAndCFReset = () => {
+    selectedGenesAndCF = []
+    document.getElementById('dataexploration').innerHTML = ""
+}
 
 let buildDataExplorePlots = async function() {
 
@@ -124,6 +128,14 @@ let buildDataExplorePlots = async function() {
         let dataFetched = await fetchNumberSamples();
         let countQuery = dataFetched.Counts;
         let totalNumberBarcodes = 0;
+
+        var mySelectedClinicalFeaturesCopy = [...mySelectedClinicalFeatures]
+        mySelectedClinicalFeatures = _.difference(mySelectedClinicalFeaturesCopy, selectedGenesAndCF)
+        // if the 'old' array has a length greater than 'new' array, then removal had occured
+        if (selectedGenesAndCF.length > mySelectedClinicalFeaturesCopy.length) {
+            $('#' + _.difference(selectedGenesAndCF, mySelectedClinicalFeaturesCopy)[0] + 'Div').remove()
+        } else {
+
         for(let i = 0; i < countQuery.length; i++) {
             totalNumberBarcodes += parseInt(countQuery[i].mrnaseq);
 
@@ -137,12 +149,6 @@ let buildDataExplorePlots = async function() {
         }
         // loop through each selected clinical feature
 
-        let mySelectedClinicalFeaturesCopy = [...mySelectedClinicalFeatures]
-        mySelectedClinicalFeatures = _.difference(mySelectedClinicalFeaturesCopy, selectedGenesAndCF)
-        // if the 'old' array has a length greater than 'new' array, then removal had occured
-        if (selectedGenesAndCF.length > mySelectedClinicalFeaturesCopy.length) {
-            $('#' + _.difference(selectedGenesAndCF, mySelectedClinicalFeaturesCopy)[0] + 'Div').remove()
-        } else {
 
         for(let i = 0; i < mySelectedClinicalFeatures.length; i++) {
 
@@ -309,19 +315,20 @@ let buildDataExplorePlots = async function() {
 
             var config = {responsive: true}
         
-            let parentRowDiv = document.getElementById("dataexploration");        
-            let newDiv = document.createElement("div");
-            newDiv.setAttribute("class", "col s4");
-            newDiv.setAttribute("id", currentFeature + "Div");
-            parentRowDiv.appendChild(newDiv);
-            
+            if (document.getElementById(currentFeature + "Div") === null) {
+                let parentRowDiv = document.getElementById("dataexploration");        
+                let newDiv = document.createElement("div");
+                newDiv.setAttribute("class", "col s4");
+                newDiv.setAttribute("id", currentFeature + "Div");
+                parentRowDiv.appendChild(newDiv);
+            }
+                
             if(continuous){
                 Plotly.newPlot(currentFeature + 'Div', histo_data, histo_layout, config, {scrollZoom: true});
             }
             else{
                 Plotly.newPlot(currentFeature + 'Div', data, layout, config, {scrollZoom: true});
             }
-
             ////////////////////////////////////////////////////////////////////////////////////////////////
             ////////////////////////////////////////////////////////////////////////////////////////////////
             //////////////////////// On-click event for pie charts below ///////////////////////////////////
@@ -370,8 +377,10 @@ let buildDataExplorePlots = async function() {
             });
         }
         }
-        selectedGenesAndCF = mySelectedClinicalFeaturesCopy
-    }
+        }
+      
+    // console.log('current ', [...mySelectedClinicalFeaturesCopy])
+    selectedGenesAndCF = mySelectedClinicalFeaturesCopy
 }}
                                                                    
 let displayNumberBarcodesAtIntersection = async function () {
