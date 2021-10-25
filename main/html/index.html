@@ -26,7 +26,8 @@
         <script src="https://cdn.plot.ly/plotly-2.5.0.min.js" defer></script>
         <!-- webgen styles and javascript -->
         <link rel="stylesheet" type="text/css" href="../css/style.css" />
-        <script src="../js/dataAcquisition/fetchHelper.js"></script>
+
+        <!-- <script src="../js/dataAcquisition/fetchHelper.js"></script>
         <script src="../js/fillSelectBoxes.js"></script>
         <script src="../js/dataAcquisition/fetchClinicalData.js" defer></script>
         <script src="../js/dataAcquisition/fetchExpressionData.js" defer></script>
@@ -35,7 +36,7 @@
         <script src="../js/dataProcessing/mergeExpression.js" defer></script>
         <script src="../js/plots/createHeatmap.js" defer></script>
         <script src="../js/plots/createViolinPlot.js" defer></script>
-        <script src="../js/afterSubmit.js" defer></script>
+        <script src="../js/afterSubmit.js" defer></script> -->
     </head>
 
     <body>
@@ -84,25 +85,25 @@
                 <!--
       Set up the user input text fields
       -->
-                <script>
+                <script type="module">
+                    import * as webgen from '../js/main.js';
                     $(document).ready(function () {
                         //For Pathways Select2 Drop down:
                         $(".pathwayMultipleSelection").select2({
                             placeholder: "Pathway(s)",
                         });
-
-                        fillPathwaySelectBox();
+                        webgen.fillPathwaySelectBox();
                     });
 
                     // Get the list of valid genes users can search for:
-                    validGeneListFetch = getValidGeneList();
+                    let validGeneListFetch = webgen.getValidGeneList();
                     validGeneListFetch.then(function (validGeneList) {
                         $(document).ready(function () {
                             // For Cancer Type Select2 Drop down:
                             $(".cancerTypeMultipleSelection").select2({
                                 placeholder: "Tumor Type(s)",
                             });
-                            fillCancerTypeSelectBox();
+                            webgen.fillCancerTypeSelectBox();
 
                             // Map the array of geneList with attributes of id, text, and value
                             var geneListArray = _.map(_.range(0, validGeneList.length), function (i) {

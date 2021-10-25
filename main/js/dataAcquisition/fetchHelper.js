@@ -45,3 +45,5 @@ async function fetchFromFireBrowse(endpoint, params) {
   }
   return json;
 }
+
+export { fetchFromFireBrowse };

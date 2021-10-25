@@ -1,3 +1,5 @@
+import { fetchFromFireBrowse } from './dataAcquisition/fetchHelper.js'
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////// Fill Cancer Type Select Box (below) /////////////////////////////////////////////////////////
@@ -181,7 +183,7 @@ let getGenesByPathway = async function () {
 
 //Populates the pathway select box
 let fillPathwaySelectBox = async function () {
-  validPathwaysList = await getValidPathwaysList();
+  let validPathwaysList = await getValidPathwaysList();
   let selectBox = document.getElementById("pathwayMultipleSelection");
 
   $("#geneOneMultipleSelection").val(null).trigger("change");
@@ -499,3 +501,5 @@ let saveInLocalStorage = async function () {
     .map((gene) => gene.text);
   localStorage.setItem("geneTwoSelectedOptions", geneTwoSelectedOptions);
 };
+
+export { fillCancerTypeSelectBox, fillPathwaySelectBox, getValidGeneList };
